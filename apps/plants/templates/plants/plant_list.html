@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Мои растения</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; background: #f5f5f5; }
+        .plant { background: white; padding: 20px; margin: 15px 0; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .plant h2 { margin-top: 0; color: #2e7d32; }
+        .meta { color: #666; font-size: 0.9em; margin: 10px 0; }
+        .status-ok { color: green; font-weight: bold; }
+        .status-overdue { color: red; font-weight: bold; }
+        
+        .btn { 
+            display: inline-block; 
+            padding: 10px 20px; 
+            text-decoration: none; 
+            border-radius: 5px; 
+            margin-top: 10px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .btn-water { background: #2196F3; color: white; }
+        .btn-water:hover { background: #1976D2; }
+        .btn-add { background: #4CAF50; color: white; margin-bottom: 20px; }
+        
+        .empty { text-align: center; color: #999; padding: 40px; background: white; border-radius: 10px; }
+    </style>
+</head>
+<body>
+    <h1>🌿 Мои растения</h1>
+    
+    <a href="/add/" class="btn btn-add">+ Добавить растение</a>
+    
+    {% if plants_with_status %}
+        {% for item in plants_with_status %}
+        <div class="plant">
+            <h2>{{ item.plant.nickname }}</h2>
+            <div class="meta">
+                {% if item.plant.species %}
+                    <strong>Вид:</strong> {{ item.plant.species.latin_name }}<br>
+                {% endif %}
+                <strong>Место:</strong> {{ item.plant.location_at_home|default:"Не указано" }}<br>
+                
+                {% if item.schedule %}
+                    <strong>Следующий полив:</strong> 
+                    {% if item.status == "overdue" %}
+                        <span class="status-overdue">Просрочен! ({{ item.schedule.next_due|date:"d.m.Y" }})</span>
+                    {% else %}
+                        <span class="status-ok">{{ item.schedule.next_due|date:"d.m.Y" }}</span>
+                    {% endif %}
+                {% else %}
+                    <span style="color: orange;">Расписание не настроено</span>
+                {% endif %}
+            </div>
+            
+            <a href="/water/{{ item.plant.id }}/" class="btn btn-water">💧 Полить</a>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="empty">
+            <h2>У вас пока нет растений</h2>
+            <p>Добавьте первое растение, чтобы начать уход</p>
+        </div>
+    {% endif %}
+</body>
+</html>

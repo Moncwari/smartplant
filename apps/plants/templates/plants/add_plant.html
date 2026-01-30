@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Добавить растение</title>
+    <style>
+        body { font-family: Arial; max-width: 600px; margin: 50px auto; padding: 20px; }
+        label { display: block; margin-top: 15px; font-weight: bold; }
+        input, select { width: 100%; padding: 8px; margin-top: 5px; }
+        button { margin-top: 20px; padding: 10px 20px; background: #4CAF50; color: white; border: none; cursor: pointer; }
+        a { color: #666; }
+    </style>
+</head>
+<body>
+    <h1>🌱 Добавить новое растение</h1>
+    
+    <form method="post">
+        {% csrf_token %}
+        
+        <label>Название (как зовешь):</label>
+        <input type="text" name="nickname" required placeholder="Например: Монстера на кухне">
+        
+        <label>Вид растения:</label>
+        <select name="species">
+            <option value="">-- Не знаю / Другой --</option>
+            {% for s in species_list %}
+            <option value="{{ s.id }}">{{ s.latin_name }} ({{ s.common_names }})</option>
+            {% endfor %}
+        </select>
+        
+        <label>Где стоит:</label>
+        <input type="text" name="location" placeholder="Например: Гостиная, южное окно">
+        
+        <button type="submit">💾 Сохранить</button>
+    </form>
+    
+    <p><a href="/">← Назад к моим растениям</a></p>
+</body>
+</html>
