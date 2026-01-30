@@ -30,3 +30,5 @@ class User(AbstractUser):
     
     def __str__(self):
         return self.username
+
+# postgresql://smartplant_ha0w_user:2ZugEFexrYyk2rOYl2EbHwgwht1Q2Lmb@dpg-d5ucsf14tr6s73elt3pg-a/smartplant_ha0w
